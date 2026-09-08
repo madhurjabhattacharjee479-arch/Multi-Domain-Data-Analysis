@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Domain Data Analysis Portfolio - Madhurja Bhattacharjee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-dark: #0f172a;
+      --navy-mid: #1e293b;
+      --navy-light: #334155;
+      --slate-muted: #64748b;
+      --slate-light: #f8fafc;
+      --slate-border: #e2e8f0;
+      --white: #ffffff;
+      --teal: #0d9488;
+      --teal-dark: #0f766e;
+      --teal-light: #ccfbf1;
+      --teal-subtle: #f0fdfa;
+      --blue: #0284c7;
+      --blue-light: #e0f2fe;
+      --amber: #b45309;
+      --amber-light: #fef3c7;
+      --amber-border: #fde68a;
+      --green: #15803d;
+      --green-light: #dcfce7;
+      --green-border: #86efac;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #0b0f19;
+      color: var(--navy-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+
+    /* Top Control Bar */
+    .control-bar {
+      width: 1200px;
+      max-width: 95vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f1f5f9;
+      z-index: 100;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      background: var(--teal);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #334155;
+      border-color: var(--teal);
+      color: #ffffff;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--teal-dark);
+      border-color: var(--teal-dark);
+    }
+
+    .slide-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      padding: 0 10px;
+    }
+
+    /* 16:9 Presentation Stage */
+    .deck-container {
+      width: 1200px;
+      height: 675px; /* 16:9 */
+      max-width: 95vw;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      padding: 36px 48px;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--white);
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    /* Slide Header */
+    .slide-header {
+      margin-bottom: 14px;
+    }
+
+    .slide-tracker {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .slide-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy-dark);
+      line-height: 1.15;
+    }
+
+    .slide-subtitle {
+      font-size: 13px;
+      color: var(--slate-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Slide Body Layouts */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      gap: 24px;
+      overflow: hidden;
+    }
+
+    .col-left {
+      flex: 1.05;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .col-right {
+      flex: 1.15;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* KPI Row */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .kpi-card {
+      background: var(--slate-light);
+      border: 1px solid var(--slate-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .kpi-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1.1;
+    }
+
+    .kpi-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .kpi-sub {
+      font-size: 9px;
+      color: var(--slate-muted);
+      margin-top: 2px;
+    }
+
+    /* Bullet Cards */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--slate-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 14px;
+      background: var(--teal);
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    ul.bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    ul.bullet-list li {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: var(--navy-light);
+      position: relative;
+      padding-left: 14px;
+    }
+
+    ul.bullet-list li::before {
+      content: "•";
+      color: var(--teal);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    ul.bullet-list li strong {
+      color: var(--navy-dark);
+      font-weight: 700;
+    }
+
+    /* Callout Box */
+    .callout {
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 10.5px;
+      line-height: 1.45;
+    }
+
+    .callout-amber {
+      background: var(--amber-light);
+      border: 1px solid var(--amber-border);
+      color: #78350f;
+    }
+
+    .callout-blue {
+      background: var(--blue-light);
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+    }
+
+    .callout-green {
+      background: var(--green-light);
+      border: 1px solid var(--green-border);
+      color: #14532d;
+    }
+
+    .callout-badge {
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    /* Chart Containers */
+    .chart-card {
+      background: var(--white);
+      border: 1px solid var(--slate-border);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .chart-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy-mid);
+      margin-bottom: 6px;
+    }
+
+    .chart-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    /* Slide Footer */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid var(--slate-border);
+      font-size: 10px;
+      color: var(--slate-muted);
+    }
+
+    .slide-footer strong {
+      color: var(--navy-dark);
+    }
+
+    /* Slide 1 Custom Layout */
+    .title-card {
+      border: 2px solid var(--teal);
+      border-radius: 12px;
+      padding: 44px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+    }
+
+    .title-badge {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--teal);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .main-hero-title {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--navy-dark);
+      line-height: 1.1;
+      margin: 12px 0 8px 0;
+    }
+
+    .main-hero-sub {
+      font-size: 20px;
+      color: var(--slate-muted);
+      font-weight: 500;
+    }
+
+    .candidate-strip {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--slate-border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      display: flex;
+      gap: 30px;
+      font-size: 13px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .candidate-strip div span {
+      font-weight: 700;
+      color: var(--navy-dark);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .p-pill {
+      background: white;
+      border: 1px solid var(--slate-border);
+      border-radius: 8px;
+      padding: 12px;
+      border-top: 3px solid var(--teal);
+      transition: transform 0.2s ease;
+    }
+
+    .p-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .p-pill-num {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--teal);
+      text-transform: uppercase;
+    }
+
+    .p-pill-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin: 3px 0;
+    }
+
+    .p-pill-cat {
+      font-size: 10px;
+      color: var(--slate-muted);
+    }
+
+    /* Table Styles (Slide 8) */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+
+    .matrix-table th {
+      background: var(--navy-dark);
+      color: white;
+      text-align: left;
+      padding: 8px 10px;
+      font-weight: 700;
+    }
+
+    .matrix-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--slate-border);
+      color: var(--navy-light);
+      line-height: 1.35;
+    }
+
+    .matrix-table tr:nth-child(even) td {
+      background: var(--slate-light);
+    }
+
+    .matrix-table td strong {
+      color: var(--navy-dark);
+    }
+
+    /* Print styling: Print clean 12 landscape slides */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .control-bar {
+        display: none;
+      }
+      .deck-container {
+        width: 100%;
+        height: 100%;
+        box-shadow: none;
+        border: none;
+      }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        height: 100vh;
+        width: 100vw;
+        border: none;
+        position: relative;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Control Bar -->
+  <div class="control-bar">
+    <div class="brand-title">
+      <span class="brand-badge">Internship</span>
+      <span>Multi-Domain Data Analysis Portfolio</span>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="prevSlide()">← Prev</button>
+      <span class="slide-counter" id="counter">01 / 12</span>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+      <button class="btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+      <button class="btn" onclick="window.print()">🖨 Print / PDF</button>
+      <a class="btn" href="multi_domain_data_analysis_portfolio.pptx" download style="text-decoration:none;">📥 Download PPTX</a>
+    </div>
+  </div>
+
+  <!-- Deck Container (16:9) -->
+  <div class="deck-container" id="deck">
+
+    <!-- SLIDE 1: TITLE -->
+    <div class="slide active" id="slide-1">
+      <div class="title-card">
+        <div>
+          <div class="title-badge">Developers Arena Internship Portfolio</div>
+          <h1 class="main-hero-title">Multi-Domain Data Analysis Portfolio</h1>
+          <div class="main-hero-sub">5 Real-World Data Analysis Projects Across Distinct Domains</div>
+        </div>
+
+        <div class="candidate-strip">
+          <div><span>Author:</span> Madhurja Bhattacharjee</div>
+          <div><span>Program:</span> Developers Arena Internship</div>
+          <div><span>Tech Stack:</span> Python 3.13 • Pandas • NumPy • SciPy • Matplotlib • Seaborn • Pytest</div>
+        </div>
+
+        <div class="project-grid">
+          <div class="p-pill">
+            <div class="p-pill-num">Project 01</div>
+            <div class="p-pill-name">Supermarket Sales</div>
+            <div class="p-pill-cat">Retail & Commerce</div>
+          </div>
+          <div class="p-pill">
+            <div class="p-pill-num">Project 02</div>
+            <div class="p-pill-name">Student Performance</div>
+            <div class="p-pill-cat">Academic & Education</div>
+          </div>
+          <div class="p-pill">
+            <div class="p-pill-num">Project 03</div>
+            <div class="p-pill-name">Weather Analysis</div>
+            <div class="p-pill-cat">Meteorology & Climate</div>
+          </div>
+          <div class="p-pill">
+            <div class="p-pill-num">Project 04</div>
+            <div class="p-pill-name">COVID-19 Trends</div>
+            <div class="p-pill-cat">Public Health & Epidemiology</div>
+          </div>
+          <div class="p-pill">
+            <div class="p-pill-num">Project 05</div>
+            <div class="p-pill-name">Stock Market Risk</div>
+            <div class="p-pill-cat">Finance & Quantitative Risk</div>
+          </div>
+        </div>
+
+        <div class="slide-footer" style="border:none; padding:0;">
+          <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+          <div>Slide 01 of 12</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: OVERVIEW & METHODOLOGY -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="slide-tracker">Portfolio Framework</div>
+        <h2 class="slide-title">Project Overview & Analytics Methodology</h2>
+        <div class="slide-subtitle">A standardized 7-stage analytical lifecycle executed across 5 industry sectors</div>
+      </div>
+
+      <div style="background:var(--blue-light); border:1px solid #bae6fd; border-radius:8px; padding:10px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:10px; font-weight:800; color:var(--blue); text-transform:uppercase; letter-spacing:0.5px;">Standardized Workflow:</span>
+        <span style="font-size:11.5px; font-weight:700; color:var(--navy-dark);">
+          1. Data Ingestion &nbsp;→&nbsp; 2. Cleaning &nbsp;→&nbsp; 3. Validation & Unit Tests &nbsp;→&nbsp; 4. Statistical EDA &nbsp;→&nbsp; 5. Publication Visuals &nbsp;→&nbsp; 6. Insights &nbsp;→&nbsp; 7. Testable Recommendations
+        </span>
+      </div>
+
+      <div class="slide-body" style="gap:16px;">
+        <div class="card" style="flex:1;">
+          <div class="card-title">Five Multi-Domain Datasets</div>
+          <ul class="bullet-list">
+            <li><strong>Supermarket Sales:</strong> 2,000 retail transactions; branch revenue, basket size, time-period traffic, and customer ratings.</li>
+            <li><strong>Student Performance:</strong> 500 student academic records; study hours, attendance %, subject scores, and performance tiers.</li>
+            <li><strong>Weather Analysis:</strong> 365 daily station records; annual rainfall concentration, temperature cycles, and extreme conditions.</li>
+            <li><strong>COVID Healthcare:</strong> 1,825 regional tracking logs; case waves, vaccination phases, and regional mortality disparities.</li>
+            <li><strong>Stock Market Risk:</strong> 252 trading days; compounded return, price volatility, max drawdown, and Sharpe ratio.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="flex:1;">
+          <div class="card-title">Statistical Analysis & Rigor</div>
+          <ul class="bullet-list">
+            <li><strong>Central Tendency:</strong> Mean, median, and quartile analysis to detect skewness and avoid outlier distortions.</li>
+            <li><strong>Dispersion & Risk:</strong> Standard deviation, interquartile range (IQR), annualized volatility, and maximum drawdown.</li>
+            <li><strong>Correlation Analysis:</strong> Pearson correlation matrices with strict distinction between correlation and causation.</li>
+            <li><strong>Stratification:</strong> Performance tier segmentation, customer classification, and vaccination phase stratification.</li>
+            <li><strong>Time-Series Profiling:</strong> 7-day moving averages, seasonal aggregation, and month-over-month compounding.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="flex:1;">
+          <div class="card-title">Engineering & Quality Stack</div>
+          <ul class="bullet-list">
+            <li><strong>Python Core Stack:</strong> Python 3.13, Pandas 2.2.0, NumPy 1.24.0, SciPy 1.12.0 for numerical computing.</li>
+            <li><strong>Visualization Engine:</strong> Matplotlib 3.8.0 and Seaborn 0.13.0 for accessible, labeled figures.</li>
+            <li><strong>Executive Reporting:</strong> FPDF2 2.7.8 for programmatic generation of formal PDF reports.</li>
+            <li><strong>Automated Testing:</strong> Pytest framework verifying shapes, nulls, duplicates, and formulas (18 tests passed).</li>
+            <li><strong>Integrity Principle:</strong> Zero artificial smoothing; raw source anomalies documented as limitations.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 02 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: PROJECT 01 - SUPERMARKET SALES -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="slide-tracker">Project 01: Retail & Commerce</div>
+        <h2 class="slide-title">Supermarket Sales Analysis</h2>
+        <div class="slide-subtitle">2,000 retail transactions analyzed across 3 branches, 6 product categories, and 2023 seasonal patterns</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="col-left">
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-val">₹519,281</div>
+              <div class="kpi-lbl">Total Revenue</div>
+              <div class="kpi-sub">2,000 Transactions</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">₹259.64</div>
+              <div class="kpi-lbl">Avg Basket</div>
+              <div class="kpi-sub">Median: ₹258.04</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">6.96 / 10</div>
+              <div class="kpi-lbl">Avg Rating</div>
+              <div class="kpi-sub">Median: 6.95 / 10</div>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;">
+            <div class="card-title">Key Analytical Findings</div>
+            <ul class="bullet-list">
+              <li><strong>Branch Revenue:</strong> Branch B leads at ₹180,821.79 (34.8%), Branch A closely tied at ₹179,047.93 (34.5%), while Branch C underperforms at ₹159,410.97 (30.7%, a 4.1% gap).</li>
+              <li><strong>Afternoon Peak (12–5 PM):</strong> 42.2% of daily transactions (844 txns) occur in the afternoon rush, generating 9.7% more volume than morning (32.5%) and evening (25.4%).</li>
+              <li><strong>Product Line Balance:</strong> Health & Beauty leads at ₹96,970.32 (18.7%), followed by Sports & Travel (17.6%). The spread across all 6 lines is narrow (3.8%), showing stable demand.</li>
+              <li><strong>Member Volume Dynamics:</strong> Members drive +₹4,558 more total revenue via higher visit frequency (+36 txns), not basket size (Normal spends 1.86% more per txn: ₹262.08 vs ₹257.29).</li>
+              <li><strong>Gender Patterns:</strong> Females generated 3.68% higher total revenue (1,019 vs 981 txns) with higher satisfaction ratings (7.03 vs 6.88).</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-amber">
+            <span class="callout-badge">Data Quality Limitation: Financial Consistency</span><br>
+            The dataset contains a discrepancy between the provided 'Total' and 'Unit Price × Quantity + Tax' for most transactions. Original values were retained without modification to preserve raw source data integrity.
+          </div>
+        </div>
+
+        <div class="col-right">
+          <div class="chart-card">
+            <div class="chart-title">Figure 1.1: Total Revenue and Transaction Volume by Branch</div>
+            <img class="chart-img" src="../visualizations/02_branch_performance.png" alt="Branch Performance">
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Figure 1.2: Hourly Shopping Distribution & Afternoon Peak</div>
+            <img class="chart-img" src="../visualizations/01_time_period_distribution.png" alt="Time Period Distribution">
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 03 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: PROJECT 02 - STUDENT PERFORMANCE -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="slide-tracker">Project 02: Academic & Education</div>
+        <h2 class="slide-title">Student Performance Analysis</h2>
+        <div class="slide-subtitle">500 student records evaluated across 4 academic subjects, attendance rates, study hours, and performance tiers</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="col-left">
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-val">74.25</div>
+              <div class="kpi-lbl">Average Score</div>
+              <div class="kpi-sub">Median: 74.25 (100% Pass)</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">r = +0.077</div>
+              <div class="kpi-lbl">Attendance Corr</div>
+              <div class="kpi-sub">Very Weak Linear Assoc</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">r = +0.096</div>
+              <div class="kpi-lbl">Study Hours Corr</div>
+              <div class="kpi-sub">Very Weak Linear Assoc</div>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;">
+            <div class="card-title">Academic Insights & Student Segmentation</div>
+            <ul class="bullet-list">
+              <li><strong>Grade Distribution:</strong> Grade A: 27.4% (137 students), Grade B: 40.6% (203), Grade C: 25.8% (129), Grade D: 5.8% (29), Grade F: 0.4% (2). Overall pass rate was 100%.</li>
+              <li><strong>Subject Independence:</strong> Pairwise subject correlations are near zero (r = -0.069 to +0.063). Strong performance in Math does not linearly imply strong performance in Social Studies.</li>
+              <li><strong>Tier Disparities vs Effort:</strong> High Performers (27.4%) average 85.97, while Low Performers (6.2%) average 56.28. However, High vs Low attendance differs by only 2.97% (77.4% vs 74.4%) and study time by only 2.32 hrs/wk (24.2 vs 21.9 hrs).</li>
+              <li><strong>Subject-Wide Consistency:</strong> High performers score 84–88 across all four subjects, while low performers score 52–60 across all four, showing broad multi-subject separation.</li>
+              <li><strong>Actionable Focus:</strong> Mere attendance enforcement and tracking study hours explain little outcome variation; interventions must focus on study quality and conceptual mastery.</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-blue">
+            <span class="callout-badge">Analytical Caution: Avoid Innate Ability / Causal Claims</span><br>
+            Weak correlations show effort quantity explains little score variance. However, this observational dataset lacks variables on teaching quality, prior preparation, home environment, or study effectiveness. It does NOT prove innate ability or genetic causation.
+          </div>
+        </div>
+
+        <div class="col-right">
+          <div class="chart-card">
+            <div class="chart-title">Figure 2.1: Academic Grade Distribution Across 500 Students</div>
+            <img class="chart-img" src="../visualizations/07_grade_distribution.png" alt="Grade Distribution">
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Figure 2.2: Subject Score Consistency Across Performance Tiers</div>
+            <img class="chart-img" src="../visualizations/09_subject_performance_heatmap.png" alt="Subject Heatmap">
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 04 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: PROJECT 03 - WEATHER DATA ANALYSIS -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="slide-tracker">Project 03: Meteorology & Environment</div>
+        <h2 class="slide-title">Weather Data Analysis</h2>
+        <div class="slide-subtitle">365 daily observations (2023) from a single meteorological station analyzing temperature cycles and rainfall concentration</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="col-left">
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-val">25.03°C</div>
+              <div class="kpi-lbl">Annual Mean Temp</div>
+              <div class="kpi-sub">Range: 0.6°C to 46.4°C</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">2,448 mm</div>
+              <div class="kpi-lbl">Annual Rainfall</div>
+              <div class="kpi-sub">Daily Avg: 6.71 mm</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">64.7%</div>
+              <div class="kpi-lbl">Monsoon Share</div>
+              <div class="kpi-sub">77 Heavy Days (>10mm)</div>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;">
+            <div class="card-title">Meteorological Patterns & Seasonal Observations</div>
+            <ul class="bullet-list">
+              <li><strong>Seasonal Temperature Shifts:</strong> Spring is warmest (avg 38.07°C, max 46.4°C), Summer moderate (avg 22.15°C), Winter cool (avg 27.72°C), and Autumn coldest (avg 12.10°C, min 0.6°C). Peak-to-trough spread is ~26°C.</li>
+              <li><strong>Monsoon Rainfall Concentration:</strong> 77 heavy-rain days (>10 mm) produce 1,583.00 mm (~65% of total annual rain), concentrated in June–September (June: 406.8mm, July: 328.5mm, Aug: 408.6mm, Sept: 408.9mm).</li>
+              <li><strong>Rainfall Frequency vs Intensity:</strong> Rain recorded on 284 days (77.8% of year), but precipitation was heavily skewed: light rain days predominate, while acute monsoon bursts carry bulk volume.</li>
+              <li><strong>Condition Breakdown:</strong> Hot days: 119 (32.6%), Pleasant: 106 (29.0%), Rainy: 77 (21.1%), Cold: 63 (17.3%).</li>
+              <li><strong>Weak Cross-Variable Linear Correlation:</strong> Pairwise correlations between temperature, humidity, wind, and rainfall were weak (|r| < 0.15), reflecting non-linear atmospheric dynamics.</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-amber">
+            <span class="callout-badge">Scientific Limitation: Single-Station Observation</span><br>
+            This analysis describes empirical observations from 365 days of 2023 data from a single station. A single year of data is insufficient to establish a formal long-term climate classification or multi-decadal trend under WMO standards.
+          </div>
+        </div>
+
+        <div class="col-right">
+          <div class="chart-card">
+            <div class="chart-title">Figure 3.1: Daily Temperature Trajectory and Extreme Bands Over 2023</div>
+            <img class="chart-img" src="../visualizations/11_temperature_trend.png" alt="Temperature Trend">
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Figure 3.2: Monthly Precipitation Highlighting June–Sept Monsoon Peak</div>
+            <img class="chart-img" src="../visualizations/12_monthly_rainfall.png" alt="Monthly Rainfall">
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 05 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: PROJECT 04 - COVID TRENDS -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="slide-tracker">Project 04: Public Health & Epidemiology</div>
+        <h2 class="slide-title">COVID Trends Analysis</h2>
+        <div class="slide-subtitle">1,825 daily regional records across 5 geographic territories examining wave dynamics, mortality, and vaccination phases</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="col-left">
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-val">391,062</div>
+              <div class="kpi-lbl">Total Cases</div>
+              <div class="kpi-sub">Deaths: 4,505 (CFR 1.15%)</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">86.23%</div>
+              <div class="kpi-lbl">Recovery Rate</div>
+              <div class="kpi-sub">337,199 Recoveries</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">-56.7%</div>
+              <div class="kpi-lbl">High Vax Phase</div>
+              <div class="kpi-sub">101 vs 234 Daily Cases</div>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;">
+            <div class="card-title">Epidemiological Patterns & Regional Disparities</div>
+            <ul class="bullet-list">
+              <li><strong>Three Pandemic Wave Periods:</strong> Period 1 (Feb–Mar): Peak 57,108 cases in Feb. Period 2 (May–Jun): Annual peak 87,244 cases in May. Period 3 (Sept–Oct): Muted peak 35,377 cases in Oct. Dec low was 2,631.</li>
+              <li><strong>Vaccination Phase Association:</strong> High vaccination phases (60%+ coverage) averaged 101.28 daily cases vs 234.17 in low vaccination phases (0–30%), representing an observed 56.7% lower observed daily cases in the high-vaccination phase.</li>
+              <li><strong>Regional Mortality Disparities:</strong> Central recorded 1,118 deaths (24.8% of total) vs East 787 deaths (17.5%). Central had 42.1% more deaths despite identical average vaccination rates (47.98%).</li>
+              <li><strong>Correlation Nuances:</strong> Vaccination rate vs Daily Cases showed moderate negative correlation (r = -0.3574); vaccination vs Deaths was weak (r = -0.1604); Daily Cases vs Deaths was positive (r = +0.3433).</li>
+              <li><strong>Healthcare Capacity Implications:</strong> Mortality variation was substantially higher than vaccination differences, pointing to regional variations in ICU beds, hospital capacity, and age demographics.</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-blue">
+            <span class="callout-badge">Methodological Note: Distinguishing Association from Causation</span><br>
+            The 56.7% case difference across vaccination phases is an observed statistical association. Observational aggregate data cannot establish singular clinical causation, as transmission was concurrently influenced by variants, mandates, and mobility.
+          </div>
+        </div>
+
+        <div class="col-right">
+          <div class="chart-card">
+            <div class="chart-title">Figure 4.1: COVID-19 7-Day Moving Average Trajectory Across 5 Regions</div>
+            <img class="chart-img" src="../visualizations/15_covid_cases_by_region.png" alt="COVID Cases by Region">
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Figure 4.2: Vaccination Rollout Progress vs Daily Case Counts Over Time</div>
+            <img class="chart-img" src="../visualizations/16_vaccination_vs_cases.png" alt="Vaccination vs Cases">
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 06 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: PROJECT 05 - STOCK MARKET ANALYSIS -->
+    <div class="slide" id="slide-7">
+      <div class="slide-header">
+        <div class="slide-tracker">Project 05: Finance & Quantitative Equity</div>
+        <h2 class="slide-title">Stock Market Analysis</h2>
+        <div class="slide-subtitle">252 trading days (Jan 2 to Dec 19, 2023) evaluating equity price trajectory, return volatility, and risk-adjusted metrics</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="col-left">
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-val">+10.14%</div>
+              <div class="kpi-lbl">Period Return</div>
+              <div class="kpi-sub">Start $101.05 → End $111.30</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">30.87%</div>
+              <div class="kpi-lbl">Annualized Vol</div>
+              <div class="kpi-sub">Daily Volatility: 1.94%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-val">-26.85%</div>
+              <div class="kpi-lbl">Max Drawdown</div>
+              <div class="kpi-sub">Trough on May 26 ($80.41)</div>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;">
+            <div class="card-title">Price Action, Return Profiles & Risk Metrics</div>
+            <ul class="bullet-list">
+              <li><strong>Price Range & Rebound:</strong> Lowest close reached $80.41 on May 26; price rallied 46.4% to a peak close of $117.74 on Nov 6, closing the period at $111.30 (+10.14% period return).</li>
+              <li><strong>Quarterly Trajectory:</strong> Severe early weakness in Q1 (-18.67% compounded, with Feb -9.79% worst month), followed by rebound in Q2 (+8.89%), Q3 (+7.68%), and Q4 (+15.49%, led by Oct +17.91% best month).</li>
+              <li><strong>Daily Return Profile:</strong> 130 positive days (51.6%) vs 121 negative days (48.0%). Daily returns ranged from -5.06% to +8.06%, with a median of +0.167% and mean of +0.057%.</li>
+              <li><strong>Sharpe Ratio (0% Rf Assumption):</strong> Annualized Sharpe ratio was 0.47, calculated using an explicit 0% risk-free rate assumption, reflecting modest risk-adjusted compensation for high 30.87% volatility.</li>
+              <li><strong>Volume-Return Disconnect:</strong> Correlation between trading volume and daily returns was r = +0.017, indicating volume spikes had negligible linear association with price direction.</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-amber">
+            <span class="callout-badge">Data Quality Limitation: OHLC Data Inconsistencies</span><br>
+            The dataset contains 78 rows with OHLC consistency issues (40 Open > High, 38 Open < Low). High >= Low had 0 violations. Return formulas were mathematically validated (<1e-13% diff). Original data retained without alteration.
+          </div>
+        </div>
+
+        <div class="col-right">
+          <div class="chart-card">
+            <div class="chart-title">Figure 5.1: Daily Close Price Trajectory with 50-Day Moving Average</div>
+            <img class="chart-img" src="../visualizations/19_stock_price_trend.png" alt="Stock Price Trend">
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Figure 5.2: Cumulative Return Profile Showing May Drawdown & Recovery</div>
+            <img class="chart-img" src="../visualizations/21_cumulative_returns.png" alt="Cumulative Returns">
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 07 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: CROSS-DOMAIN INSIGHTS -->
+    <div class="slide" id="slide-8">
+      <div class="slide-header">
+        <div class="slide-tracker">Portfolio Synthesis</div>
+        <h2 class="slide-title">Cross-Domain Insights & Analytical Comparison</h2>
+        <div class="slide-subtitle">Demonstrating methodological adaptability and statistical rigor across disparate business and scientific domains</div>
+      </div>
+
+      <div class="card" style="padding:0; overflow:hidden; margin-bottom:12px;">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="width:18%;">Domain & Dataset</th>
+              <th style="width:22%;">Core Analytical Question</th>
+              <th style="width:22%;">Key Statistical Measures</th>
+              <th style="width:18%;">Primary Visualizations</th>
+              <th style="width:20%;">Decision Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>01 Supermarket</strong><br>(2,000 txns, 14 cols)</td>
+              <td>What drives sales across branches, time periods, & customer segments?</td>
+              <td>Totals, branch shares, hourly volumes, mean/median ratings, spend parity</td>
+              <td>Grouped bars, distribution histograms, trend lines</td>
+              <td>Staffing shift to 12-5 PM peak; Branch C traffic investigation</td>
+            </tr>
+            <tr>
+              <td><strong>02 Student Scores</strong><br>(500 students, 10 cols)</td>
+              <td>How do study time and attendance relate to grades and performance tiers?</td>
+              <td>Pearson r, tier averages, inter-subject correlation matrix, percentiles</td>
+              <td>Grade bar charts, subject heatmaps, effort grouped bars</td>
+              <td>Shift from counting study hours to assessing learning strategies</td>
+            </tr>
+            <tr>
+              <td><strong>03 Weather Data</strong><br>(365 days, 12 cols)</td>
+              <td>What are the seasonal cycles, rainfall concentration, & extreme events?</td>
+              <td>Percentiles (10th/90th), annual precipitation, seasonal means & IQR</td>
+              <td>Time-series bands, monthly rainfall bars, seasonal boxplots</td>
+              <td>Rainwater storage for 64.7% rainfall concentration in 77 days; observed peak rainfall can inform drainage and rainwater-management planning</td>
+            </tr>
+            <tr>
+              <td><strong>04 COVID Healthcare</strong><br>(1,825 rows, 10 cols)</td>
+              <td>What are periods of elevated case activity, regional disparities, & vaccine phase trends?</td>
+              <td>7-day moving averages, CFR (1.15%), recovery rate (86.23%), phase means</td>
+              <td>Regional time series, dual-axis tracking, phase comparisons</td>
+              <td>Central region ICU capacity audit; targeted outreach for low-vax areas</td>
+            </tr>
+            <tr>
+              <td><strong>05 Stock Market</strong><br>(252 trading days)</td>
+              <td>What are the asset return dynamics, price volatility, & risk-adjusted metrics?</td>
+              <td>Compounded return (10.14%), annualized vol (30.87%), drawdown, Sharpe</td>
+              <td>OHLC price trends, return histograms, drawdown profiles</td>
+              <td>Stress-test portfolios against -26.85% drawdown; reference $80-$85</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="slide-body" style="gap:16px;">
+        <div class="card" style="flex:1;">
+          <div class="card-title">Analytical Commonality Across Domains</div>
+          <ul class="bullet-list">
+            <li><strong>Structured Data Lifecycle:</strong> Each project advanced through uniform data ingestion, validation, and exploratory profiling.</li>
+            <li><strong>Integrity Preservation:</strong> Anomalies (OHLC inconsistencies, financial mismatches) were investigated and documented, not masked.</li>
+          </ul>
+        </div>
+        <div class="card" style="flex:1;">
+          <div class="card-title">Turning Raw Data Into Decisions</div>
+          <ul class="bullet-list">
+            <li><strong>Avoiding Causal Traps:</strong> Maintained scientific discipline by treating weak correlations and associations without inventing causation.</li>
+            <li><strong>Testable Hypotheses:</strong> All operational proposals are framed as measurable, testable actions with trackable KPIs.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 08 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: DATA QUALITY & VALIDATION -->
+    <div class="slide" id="slide-9">
+      <div class="slide-header">
+        <div class="slide-tracker">Quality Assurance & Engineering</div>
+        <h2 class="slide-title">Data Quality, Validation & Automated Testing</h2>
+        <div class="slide-subtitle">Ensuring data integrity through automated unit testing, shape assertions, and anomaly detection</div>
+      </div>
+
+      <div class="callout callout-green" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span class="callout-badge" style="font-size:11px;">VERIFIED AUTOMATED TEST SUITE: 18 TESTS PASSED VIA PYTEST IN 1.36s</span><br>
+          100% test pass rate across 6 test modules: test_supermarket.py (3), test_student.py (3), test_weather.py (3), test_covid.py (3), test_stock_market.py (3), test_data_validation.py (3).
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:800; color:var(--green); background:white; padding:4px 12px; border-radius:6px; border:1px solid var(--green-border);">
+          18 / 18 PASSED
+        </div>
+      </div>
+
+      <div class="slide-body" style="gap:16px;">
+        <div class="card" style="flex:1;">
+          <div class="card-title">Reusable Architecture (src/)</div>
+          <ul class="bullet-list">
+            <li><strong>check_dataset_shape():</strong> Validates exact dimensional conformance against expected row and column counts.</li>
+            <li><strong>check_missing_values():</strong> Audits global null counts across all dataset columns and data types.</li>
+            <li><strong>check_duplicate_rows():</strong> Ensures zero duplicate record contamination across transactions and observations.</li>
+            <li><strong>DRY Modular Design:</strong> Standardized functions in src/data_validation.py imported directly into automated test scripts.</li>
+            <li><strong>Defensive Engineering:</strong> Enforces schema constraints before downstream statistical ingestion or modeling.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="flex:1;">
+          <div class="card-title">Dataset Dimensions & Completeness</div>
+          <ul class="bullet-list">
+            <li><strong>Supermarket Sales:</strong> 2,000 rows × 14 columns; 0 missing values; 0 duplicate rows.</li>
+            <li><strong>Student Performance:</strong> 500 rows × 10 columns; 0 missing values; 0 duplicate rows; verified score ranges (35-100).</li>
+            <li><strong>Weather Observations:</strong> 365 rows × 12 columns; 0 missing values; 0 duplicate rows; verified meteorological ranges.</li>
+            <li><strong>COVID-19 Tracking:</strong> 1,825 rows × 10 columns; 0 missing values; 0 duplicate rows; 5 regions × 365 days.</li>
+            <li><strong>Stock Market Data:</strong> 252 rows × 12 columns; 0 duplicate rows; 2 expected NaNs (Day 1 Daily & Cumulative Return).</li>
+          </ul>
+        </div>
+
+        <div class="card" style="flex:1;">
+          <div class="card-title">Integrity Audits & Derived Metrics</div>
+          <ul class="bullet-list">
+            <li><strong>Supermarket Financial Check:</strong> Flagged calculation discrepancy between Unit Price × Quantity + Tax and Total. Original data retained.</li>
+            <li><strong>Stock OHLC Validation:</strong> Identified 78 rows with Open price anomalies (40 Open > High, 38 Open < Low). High >= Low had 0 violations.</li>
+            <li><strong>Return Calculation Check:</strong> Validated Daily_Return and Cumulative_Return against price formulas: max error < 4.44e-14% (floating point precision).</li>
+            <li><strong>Preserving Raw Truth:</strong> Adhered to industry compliance: anomalies documented as limitations rather than artificially altered.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 09 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: BUSINESS RECOMMENDATIONS -->
+    <div class="slide" id="slide-10">
+      <div class="slide-header">
+        <div class="slide-tracker">Strategic Action Plan</div>
+        <h2 class="slide-title">Cross-Domain Business Recommendations</h2>
+        <div class="slide-subtitle">Translating empirical data findings into testable operational adjustments, resource allocations, and monitored KPIs</div>
+      </div>
+
+      <div class="slide-body" style="flex-direction:column; gap:8px;">
+        <div class="card" style="padding:10px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:11.5px; font-weight:800; color:var(--teal); text-transform:uppercase;">01 Supermarket Sales Optimization</span>
+            <span style="font-size:10px; font-weight:700; color:var(--blue);">Target KPIs: Hourly queue times, Branch C revenue gap, low-rating %</span>
+          </div>
+          <div style="font-size:11px; color:var(--navy-light); line-height:1.4;">
+            <strong>Empirical Finding:</strong> 42.2% of transactions occur in the afternoon (12-5 PM); Branch C lags Branch B by 4.1%; 18.7% give low ratings.<br>
+            <strong>Strategic Action:</strong> Reallocate staff & open additional checkout counters from 12-5 PM; conduct audit into Branch C footfall and marketing; investigate root causes of low customer satisfaction.
+          </div>
+        </div>
+
+        <div class="card" style="padding:10px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:11.5px; font-weight:800; color:var(--teal); text-transform:uppercase;">02 Student Academic Support</span>
+            <span style="font-size:10px; font-weight:700; color:var(--blue);">Target KPIs: Diagnostic scores, tier transition rates, concept gap reduction</span>
+          </div>
+          <div style="font-size:11px; color:var(--navy-light); line-height:1.4;">
+            <strong>Empirical Finding:</strong> Study hours (r=0.096) and attendance (r=0.077) show very weak linear correlation with grades; effort between tiers differs by <3%.<br>
+            <strong>Strategic Action:</strong> Move away from rigid study-hour mandates; implement diagnostic assessments early to identify specific concept gaps; provide personalized learning and remediation.
+          </div>
+        </div>
+
+        <div class="card" style="padding:10px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:11.5px; font-weight:800; color:var(--teal); text-transform:uppercase;">03 Municipal Water & Infrastructure Planning</span>
+            <span style="font-size:10px; font-weight:700; color:var(--blue);">Target KPIs: Rainwater capture volume, flood incident frequency, construction delay days</span>
+          </div>
+          <div style="font-size:11px; color:var(--navy-light); line-height:1.4;">
+            <strong>Empirical Finding:</strong> 64.7% of annual rainfall (1,583 mm) falls in 77 days during June-September; peak daily rainfall reached 86.4 mm.<br>
+            <strong>Strategic Action:</strong> Develop rainwater harvesting infrastructure before June; design storm drainage to 86.4 mm capacity; pause weather-sensitive outdoor construction during monsoon.
+          </div>
+        </div>
+
+        <div class="card" style="padding:10px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:11.5px; font-weight:800; color:var(--teal); text-transform:uppercase;">04 Healthcare Resource Allocation</span>
+            <span style="font-size:10px; font-weight:700; color:var(--blue);">Target KPIs: Regional Case Fatality Rate (CFR), ICU occupancy rate, local vaccine coverage</span>
+          </div>
+          <div style="font-size:11px; color:var(--navy-light); line-height:1.4;">
+            <strong>Empirical Finding:</strong> Central region recorded 42.1% excess mortality over East despite identical average vaccination rates (47.98%).<br>
+            <strong>Strategic Action:</strong> Prioritize clinical ICU and ventilator resources to Central region; deploy targeted mobile vaccine clinics to low-coverage pockets; audit hospital capacity disparities.
+          </div>
+        </div>
+
+        <div class="card" style="padding:10px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:11.5px; font-weight:800; color:var(--teal); text-transform:uppercase;">05 Quantitative Risk Management</span>
+            <span style="font-size:10px; font-weight:700; color:var(--blue);">Target KPIs: Trailing volatility, max peak-to-trough drawdown, benchmark-adjusted Sharpe</span>
+          </div>
+          <div style="font-size:11px; color:var(--navy-light); line-height:1.4;">
+            <strong>Empirical Finding:</strong> Stock delivered +10.14% return but suffered -26.85% maximum drawdown and 30.87% annualized volatility (Sharpe 0.47).<br>
+            <strong>Strategic Action:</strong> Treat $80-$85 as historical reference rather than guaranteed support; implement risk management rules to limit drawdowns; balance return against volatility.
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 10 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: TECHNICAL IMPLEMENTATION & STRUCTURE -->
+    <div class="slide" id="slide-11">
+      <div class="slide-header">
+        <div class="slide-tracker">Technical Architecture</div>
+        <h2 class="slide-title">Technical Implementation & Repository Structure</h2>
+        <div class="slide-subtitle">Modular, reproducible data science architecture adhering to production software engineering best practices</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="col-left">
+          <div class="card">
+            <div class="card-title">Production Data Science Stack</div>
+            <ul class="bullet-list">
+              <li><strong>Python 3.13:</strong> Modern runtime executing data manipulation and analytics packages.</li>
+              <li><strong>Pandas & NumPy:</strong> Fast, vectorized dataframe manipulation, aggregation, and mathematical computations.</li>
+              <li><strong>SciPy:</strong> Scientific statistical distributions, descriptive calculations, and correlation metrics.</li>
+              <li><strong>Matplotlib & Seaborn:</strong> Production visualization engine generating 22 high-resolution, labeled figures.</li>
+              <li><strong>FPDF2:</strong> Programmatic generation of 5 formal executive analytical PDF reports.</li>
+              <li><strong>Pytest:</strong> Automated unit test suite verifying schema shapes, missing data, and financial formulas.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="flex:1;">
+            <div class="card-title">Engineering & Reproducibility Principles</div>
+            <ul class="bullet-list">
+              <li><strong>DRY Architecture:</strong> Reusable validation routines centralized in src/data_validation.py across all five domain projects.</li>
+              <li><strong>Defensive Quality Checks:</strong> Automated pre-flight assertions for schema dimensions, null values, and duplicate detection.</li>
+              <li><strong>Reproducible Artifacts:</strong> Automated scripts compile raw data into notebooks, formal PDF reports, and decks.</li>
+              <li><strong>Strict Data Provenance:</strong> Raw data is never altered in-place; source inconsistencies are documented transparently.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-right">
+          <div class="card" style="height:100%; font-family:'JetBrains Mono',monospace; font-size:10px; background:#0f172a; color:#e2e8f0; border-color:#1e293b; overflow-y:auto;">
+            <div style="font-family:'Inter',sans-serif; font-size:11px; font-weight:700; color:var(--teal); margin-bottom:8px;">ORGANIZED REPOSITORY STRUCTURE</div>
+            <div style="line-height:1.6;">
+              <span style="color:#38bdf8;">Multi-Domain-Data-Analysis/</span><br>
+              ├── <span style="color:#a5f3fc;">data/raw/</span> <span style="color:#64748b;"># 5 raw CSV datasets</span><br>
+              ├── <span style="color:#a5f3fc;">notebooks/</span> <span style="color:#64748b;"># 5 production Jupyter notebooks</span><br>
+              │   ├── 01_supermarket_sales_analysis.ipynb<br>
+              │   ├── 02_student_performance_analysis.ipynb<br>
+              │   ├── 03_weather_data_analysis.ipynb<br>
+              │   ├── 04_covid_healthcare_analysis.ipynb<br>
+              │   └── 05_stock_market_analysis.ipynb<br>
+              ├── <span style="color:#a5f3fc;">src/</span> <span style="color:#64748b;"># Reusable data validation module</span><br>
+              │   └── data_validation.py<br>
+              ├── <span style="color:#a5f3fc;">tests/</span> <span style="color:#64748b;"># Automated pytest test suite</span><br>
+              │   ├── test_data_validation.py<br>
+              │   ├── test_supermarket.py / test_student.py<br>
+              │   └── test_weather.py / test_covid.py / test_stock_market.py<br>
+              ├── <span style="color:#a5f3fc;">visualizations/</span> <span style="color:#64748b;"># 22 high-resolution saved charts</span><br>
+              ├── <span style="color:#a5f3fc;">reports/</span> <span style="color:#64748b;"># 5 formal analytical PDF reports</span><br>
+              ├── <span style="color:#a5f3fc;">presentation/</span> <span style="color:#64748b;"># PowerPoint (.pptx) & interactive HTML</span><br>
+              ├── <span style="color:#a5f3fc;">docs/</span> <span style="color:#64748b;"># Portfolio documentation & verification logs</span><br>
+              └── requirements.txt <span style="color:#64748b;"># Project dependency manifest</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee</div>
+        <div>Slide 11 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: CONCLUSION -->
+    <div class="slide" id="slide-12">
+      <div class="slide-header">
+        <div class="slide-tracker">Portfolio Summary</div>
+        <h2 class="slide-title">Conclusion: Turning Data into Decisions</h2>
+        <div class="slide-subtitle">Demonstrating end-to-end data analytics capability, technical rigor, and objective business insight generation</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:14px; flex:1;">
+        <div class="card" style="border-top:3px solid var(--teal);">
+          <div class="card-title">1. Data Ingestion & Cleaning</div>
+          <p style="font-size:11px; color:var(--navy-light); line-height:1.45;">
+            Standardized handling of diverse data formats and dates, feature engineering (time-periods, moving averages), and structured data hygiene across all datasets.
+          </p>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--blue);">
+          <div class="card-title">2. Validation & Auditing</div>
+          <p style="font-size:11px; color:var(--navy-light); line-height:1.45;">
+            Pre-flight shape assertions, missing value verification, duplicate detection, and explicit documentation of raw data anomalies without artificial distortion.
+          </p>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--navy-mid);">
+          <div class="card-title">3. Statistical EDA</div>
+          <p style="font-size:11px; color:var(--navy-light); line-height:1.45;">
+            Rigorous application of central tendency, dispersion metrics, Pearson correlation matrices, and distribution profiling tailored to each domain.
+          </p>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--teal-dark);">
+          <div class="card-title">4. Publication Visualizations</div>
+          <p style="font-size:11px; color:var(--navy-light); line-height:1.45;">
+            22 analytical Matplotlib/Seaborn figures with consistent branding, readable labels, units, and clear analytical value.
+          </p>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--amber);">
+          <div class="card-title">5. Business Strategy</div>
+          <p style="font-size:11px; color:var(--navy-light); line-height:1.45;">
+            Translating empirical patterns into testable operational adjustments while strictly avoiding causal claims from observational associations.
+          </p>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--green);">
+          <div class="card-title">6. Testing & Engineering</div>
+          <p style="font-size:11px; color:var(--navy-light); line-height:1.45;">
+            Automated pytest test suite with 18 passed tests, modular src/ architecture, pinned dependencies, and reproducible PDF reporting.
+          </p>
+        </div>
+      </div>
+
+      <div style="background:var(--navy-dark); border-radius:8px; padding:12px; text-align:center; color:white; margin-bottom:8px;">
+        <span style="font-size:15px; font-weight:800; letter-spacing:1px; color:var(--teal-light);">“TURNING DATA INTO DECISIONS”</span>
+      </div>
+
+      <div class="slide-footer">
+        <div>Multi-Domain Data Analysis Portfolio | Madhurja Bhattacharjee | Developers Arena Internship</div>
+        <div>Slide 12 of 12</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 12;
+
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > totalSlides) n = totalSlides;
+      currentSlide = n;
+
+      document.querySelectorAll('.slide').forEach((slide, idx) => {
+        slide.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.getElementById('counter').textContent = 
+        String(currentSlide).padStart(2, '0') + ' / ' + String(totalSlides).padStart(2, '0');
+    }
+
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+
+    function toggleFullScreen() {
+      const deck = document.getElementById('deck');
+      if (!document.fullscreenElement) {
+        deck.requestFullscreen().catch(err => {
+          alert(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'Home') {
+        showSlide(1);
+      } else if (e.key === 'End') {
+        showSlide(totalSlides);
+      }
+    });
+
+    showSlide(1);
+  </script>
+</body>
+</html>
