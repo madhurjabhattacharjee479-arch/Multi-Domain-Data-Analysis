@@ -7,7 +7,7 @@
 
 ---
 
-## 🎯 Executive Summary
+##  Executive Summary
 
 This portfolio presents five complete data analysis projects across different real-world domains:
 
@@ -23,7 +23,7 @@ The portfolio contains five Jupyter notebooks, five analytical PDF reports, 22 s
 
 ---
 
-## 📊 Projects Overview
+##  Projects Overview
 
 | # | Project | Domain | Dataset Size | Key Focus |
 |---|---|---|---:|---|
@@ -35,7 +35,7 @@ The portfolio contains five Jupyter notebooks, five analytical PDF reports, 22 s
 
 ---
 
-# 📂 Repository Structure
+##  Repository Structure
 
 ```text
 Multi-Domain-Data-Analysis/
@@ -96,7 +96,7 @@ Multi-Domain-Data-Analysis/
 
 ---
 
-# 🛠️ Technologies Used
+##  Technologies Used
 
 ### Programming & Data Analysis
 - Python
@@ -122,7 +122,7 @@ Multi-Domain-Data-Analysis/
 
 ---
 
-# ⚙️ Installation & Setup
+##  Installation & Setup
 
 ## Prerequisites
 
@@ -177,7 +177,7 @@ When using VS Code, select the `multi-domain-analysis` kernel when running the n
 
 ---
 
-# ▶️ How to Run the Projects
+## How to Run the Projects
 
 The portfolio is organized as five independent Jupyter Notebook analyses.
 
@@ -225,7 +225,7 @@ reports/
 
 ---
 
-# 📈 Project 01 — Supermarket Sales Analysis
+## Project 01 — Supermarket Sales Analysis
 
 ### Domain
 Retail & Commerce
@@ -266,7 +266,7 @@ The original source values were retained rather than artificially corrected, and
 
 ---
 
-# 🎓 Project 02 — Student Performance Analysis
+## Project 02 — Student Performance Analysis
 
 ### Domain
 Education & Academia
@@ -308,7 +308,7 @@ The analysis does not directly measure factors such as teaching quality, socioec
 
 ---
 
-# 🌦️ Project 03 — Weather Data Analysis
+## Project 03 — Weather Data Analysis
 
 ### Domain
 Meteorology & Environment
@@ -345,7 +345,7 @@ However, the dataset covers only one year and one station, so it is not sufficie
 
 ---
 
-# 🏥 Project 04 — COVID-19 Healthcare Trends
+## Project 04 — COVID-19 Healthcare Trends
 
 ### Domain
 Public Health & Healthcare
@@ -391,7 +391,7 @@ Regional mortality differences are also examined, with further investigation rec
 
 ---
 
-# 📈 Project 05 — Stock Market Risk & Return Analysis
+## Project 05 — Stock Market Risk & Return Analysis
 
 ### Domain
 Finance & Quantitative Analysis
@@ -443,7 +443,7 @@ Daily Return and Cumulative Return calculations were independently validated aga
 
 ---
 
-# 🧪 Data Validation & Quality Assurance
+## Data Validation & Quality Assurance
 
 Reusable validation functions are provided in:
 
@@ -472,7 +472,7 @@ Source-data anomalies are documented rather than silently modified when correcti
 
 ---
 
-# ✅ Automated Testing
+## Automated Testing
 
 The repository includes an automated pytest test suite.
 
@@ -500,7 +500,7 @@ The tests complement, rather than replace, the deeper analytical validation perf
 
 ---
 
-# 📊 Visualizations
+## Visualizations
 
 The portfolio contains **22 saved analytical visualizations** generated using Matplotlib and Seaborn.
 
@@ -524,7 +524,7 @@ visualizations/
 
 ---
 
-# 📄 Analytical Reports
+## Analytical Reports
 
 Each project includes a professional PDF report containing an executive summary, analytical findings, visual interpretation, recommendations, and relevant limitations.
 
@@ -541,7 +541,7 @@ reports/
 
 ---
 
-# 🎤 Presentation
+## Presentation
 
 The portfolio presentation is available in three formats:
 
@@ -567,7 +567,7 @@ The presentation summarizes the portfolio methodology, project findings, data-qu
 
 ---
 
-# ⚖️ Data Quality Limitations & Scientific Cautions
+## Data Quality Limitations & Scientific Cautions
 
 The portfolio emphasizes transparent interpretation of analytical results.
 
@@ -593,7 +593,7 @@ The supplied dataset contains 78 OHLC inconsistencies. Original values were pres
 
 ---
 
-# 🔬 Analytical Methodology
+## Analytical Methodology
 
 Across the five projects, the portfolio applies a combination of:
 
@@ -619,7 +619,7 @@ The methodology is adapted to the characteristics of each domain rather than app
 
 ---
 
-# 💼 Skills Demonstrated
+## Skills Demonstrated
 
 This portfolio demonstrates practical experience in:
 
@@ -645,7 +645,7 @@ This portfolio demonstrates practical experience in:
 
 ---
 
-# 🤝 Contributing
+## Contributing
 
 Contributions, suggestions, and improvements are welcome.
 
@@ -661,7 +661,7 @@ pytest
 
 ---
 
-# 📋 Changelog
+## Changelog
 
 Project changes and releases are documented in:
 
@@ -669,7 +669,7 @@ Project changes and releases are documented in:
 
 ---
 
-# 📜 License
+## License
 
 This project is licensed under the **MIT License**.
 
@@ -679,7 +679,7 @@ See [`LICENSE`](LICENSE) for the complete license text.
 
 ---
 
-# 👩‍💻 Author
+## Author
 
 **Madhurja Bhattacharjee**
 
@@ -689,13 +689,13 @@ MAKAUT
 
 ---
 
-# 📌 Internship
+## Internship
 
 Developed as part of the **Developers Arena Internship** project requirements.
 
 ---
 
-# 🚀 Conclusion
+## Conclusion
 
 > **Turning Data into Decisions**
 
